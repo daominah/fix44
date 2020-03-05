@@ -56,7 +56,7 @@ func Route(router RouteOut) (string, string, quickfix.MessageRoute) {
 	r := func(msg *quickfix.Message, sessionID quickfix.SessionID) quickfix.MessageRejectError {
 		return router(FromMessage(msg), sessionID)
 	}
-	return "FIX.4.4", "AD", r
+	return fix44.BeginString, "AD", r
 }
 
 //SetClOrdID sets ClOrdID, Tag 11

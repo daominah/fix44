@@ -51,7 +51,7 @@ func Route(router RouteOut) (string, string, quickfix.MessageRoute) {
 	r := func(msg *quickfix.Message, sessionID quickfix.SessionID) quickfix.MessageRejectError {
 		return router(FromMessage(msg), sessionID)
 	}
-	return "FIX.4.4", "1", r
+	return fix44.BeginString, "1", r
 }
 
 //SetTestReqID sets TestReqID, Tag 112

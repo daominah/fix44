@@ -1,6 +1,7 @@
 package fix44
 
 import (
+	"os"
 	"time"
 
 	"github.com/quickfixgo/enum"
@@ -8,6 +9,17 @@ import (
 	"github.com/quickfixgo/quickfix"
 	"github.com/quickfixgo/tag"
 )
+
+// BeginString acts as a constant.
+// It can only be modified at init by set env BEGIN_STRING_HNX
+var BeginString = "FIX.4.4"
+
+func init() {
+	beginStringHNX := os.Getenv("BEGIN_STRING_HNX")
+	if beginStringHNX != "" {
+		BeginString = beginStringHNX // "HNX.TDS.1"
+	}
+}
 
 //Header is the fix44 Header type
 type Header struct {
@@ -17,7 +29,7 @@ type Header struct {
 //NewHeader returns a new, initialized Header instance
 func NewHeader(header *quickfix.Header) (h Header) {
 	h.Header = header
-	h.SetBeginString("FIX.4.4")
+	h.SetBeginString(BeginString)
 	return
 }
 

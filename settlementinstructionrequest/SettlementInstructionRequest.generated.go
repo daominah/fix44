@@ -55,7 +55,7 @@ func Route(router RouteOut) (string, string, quickfix.MessageRoute) {
 	r := func(msg *quickfix.Message, sessionID quickfix.SessionID) quickfix.MessageRejectError {
 		return router(FromMessage(msg), sessionID)
 	}
-	return "FIX.4.4", "AV", r
+	return fix44.BeginString, "AV", r
 }
 
 //SetSide sets Side, Tag 54

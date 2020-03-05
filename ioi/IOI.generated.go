@@ -58,7 +58,7 @@ func Route(router RouteOut) (string, string, quickfix.MessageRoute) {
 	r := func(msg *quickfix.Message, sessionID quickfix.SessionID) quickfix.MessageRejectError {
 		return router(FromMessage(msg), sessionID)
 	}
-	return "FIX.4.4", "6", r
+	return fix44.BeginString, "6", r
 }
 
 //SetCurrency sets Currency, Tag 15
