@@ -2,6 +2,7 @@ package fix44
 
 import (
 	"os"
+	"strconv"
 	"time"
 
 	"github.com/quickfixgo/enum"
@@ -11,13 +12,13 @@ import (
 )
 
 // BeginString acts as a constant.
-// It can only be modified at init by set env BEGIN_STRING_HNX
+// It should only be modified at init by set env IS_HNX_INFO_GATE_PROTOCOL
 var BeginString = "FIX.4.4"
 
 func init() {
-	beginStringHNX := os.Getenv("BEGIN_STRING_HNX")
-	if beginStringHNX != "" {
-		BeginString = beginStringHNX // "HNX.TDS.1"
+	isHNX, _ := strconv.ParseBool(os.Getenv("IS_HNX_INFO_GATE_PROTOCOL"))
+	if isHNX {
+		BeginString = "HNX.TDS.1"
 	}
 }
 
