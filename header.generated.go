@@ -15,9 +15,12 @@ import (
 // It should only be modified at init by set env IS_HNX_INFO_GATE_PROTOCOL
 var BeginString = "FIX.4.4"
 
+// IsHNXInfoGateProtocol should only be modified at init by set env IS_HNX_INFO_GATE_PROTOCOL
+var IsHNXInfoGateProtocol = false
+
 func init() {
-	isHNX, _ := strconv.ParseBool(os.Getenv("IS_HNX_INFO_GATE_PROTOCOL"))
-	if isHNX {
+	IsHNXInfoGateProtocol, _ = strconv.ParseBool(os.Getenv("IS_HNX_INFO_GATE_PROTOCOL"))
+	if IsHNXInfoGateProtocol {
 		BeginString = "HNX.TDS.1"
 	}
 }
