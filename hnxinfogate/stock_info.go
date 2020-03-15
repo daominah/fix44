@@ -17,7 +17,7 @@ type StockInfo struct {
 }
 
 // FromMessage creates a StockInfo from a quickfix.Message instance
-func FromMessage(m *quickfix.Message) StockInfo {
+func FromMessageToStockInfo(m *quickfix.Message) StockInfo {
 	return StockInfo{
 		Header:  fix44.Header{&m.Header},
 		Body:    &m.Body,
@@ -32,10 +32,10 @@ func (m StockInfo) ToMessage() *quickfix.Message {
 }
 
 //Route returns the beginstring, message type, and MessageRoute for this Message type
-func Route(router func(msg StockInfo, sessionID quickfix.SessionID) quickfix.MessageRejectError) (
+func RouteStockInfo(router func(msg StockInfo, sessionID quickfix.SessionID) quickfix.MessageRejectError) (
 	string, string, quickfix.MessageRoute) {
 	r := func(msg *quickfix.Message, sessionID quickfix.SessionID) quickfix.MessageRejectError {
-		return router(FromMessage(msg), sessionID)
+		return router(FromMessageToStockInfo(msg), sessionID)
 	}
 	return fix44.BeginString, "SI", r
 }
@@ -50,6 +50,9 @@ func (m StockInfo) GetSymbol() (v string, err quickfix.MessageRejectError) {
 }
 
 // GetBoardCode Tag 425
+//Mã bảng của chứng khoán:
+//	-LIS_BRD_01,..: bảng niêm yết
+//	-UPC_BRD_01,…: bảng upcom
 func (m StockInfo) GetBoardCode() (v string, err quickfix.MessageRejectError) {
 	var f BoardCodeField
 	if err = m.Get(&f); err == nil {
