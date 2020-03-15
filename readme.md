@@ -4,4 +4,4 @@ from standard FIX.4.4
 
 ### Changes
 * Changeable BeginString (by env IS_HNX_INFO_GATE_PROTOCOL)
-* Do not care about MsgSeqNum
+* Add some HNXInfoGate msgTypes

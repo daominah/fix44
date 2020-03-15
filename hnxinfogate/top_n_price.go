@@ -63,7 +63,7 @@ func (m TopNPrice) GetBoardCode() (v string, err quickfix.MessageRejectError) {
 
 // Tag 555.
 // Số mức giá tốt nhất
-func (m StockInfo) GetNOTopPrice() (v float64, err quickfix.MessageRejectError) {
+func (m TopNPrice) GetNOTopPrice() (v float64, err quickfix.MessageRejectError) {
 	var f NOTopPriceField
 	if err = m.Get(&f); err == nil {
 		v, _ = f.Value().Float64()
@@ -76,7 +76,26 @@ type NOTopPriceField struct{ quickfix.FIXDecimal }
 func (f NOTopPriceField) Tag() quickfix.Tag      { return 555 }
 func (f NOTopPriceField) Value() decimal.Decimal { return f.Decimal }
 
+func (m TopNPrice) GetBidAsks() (
+	v BidAskRepeatingGroup, err quickfix.MessageRejectError) {
+	v = NewBidAskRepeatingGroup()
+	err = m.GetGroup(v)
+	return v, err
+}
+
 type BidAskRepeatingGroup struct{ *quickfix.RepeatingGroup }
+
+func NewBidAskRepeatingGroup() BidAskRepeatingGroup {
+	return BidAskRepeatingGroup{
+		RepeatingGroup: quickfix.NewRepeatingGroup(555,
+			quickfix.GroupTemplate{
+				quickfix.GroupElement(556),
+				quickfix.GroupElement(132),
+				quickfix.GroupElement(1321),
+				quickfix.GroupElement(133),
+				quickfix.GroupElement(1331),
+			})}
+}
 
 func (m BidAskRepeatingGroup) Add() BidAskGroup {
 	g := m.RepeatingGroup.Add()

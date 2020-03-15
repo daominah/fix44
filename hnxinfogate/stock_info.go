@@ -94,7 +94,7 @@ func (f SecurityTradingStatusField) Value() int        { return f.Int() }
 //	ST: Cổ phiếu
 //	BO: Trái phiếu
 //	MF: Chứng chỉ quỹ
-//	EF: Exchange Traded Funds
+//	EF: Exchange-Traded Funds
 //	FU: Future
 //	OP: Option
 func (m StockInfo) GetSecurityType() (v string, err quickfix.MessageRejectError) {
@@ -166,7 +166,7 @@ func (m StockInfo) GetBestOfferPrice() (v float64, err quickfix.MessageRejectErr
 }
 
 // GetBestOfferQtty Tag 1331.
-// Khối lượng đặt mua tốt nhất của GD khớp lệnh (lô chẵn)
+// Khối lượng đặt bán tốt nhất của GD khớp lệnh (lô chẵn)
 func (m StockInfo) GetBestOfferQtty() (v float64, err quickfix.MessageRejectError) {
 	var f BestOfferQttyField
 	if err = m.Get(&f); err == nil {
