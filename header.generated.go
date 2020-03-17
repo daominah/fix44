@@ -1,8 +1,6 @@
 package fix44
 
 import (
-	"os"
-	"strconv"
 	"time"
 
 	"github.com/quickfixgo/enum"
@@ -12,18 +10,8 @@ import (
 )
 
 // BeginString acts as a constant.
-// It should only be modified at init by set env IS_HNX_INFO_GATE_PROTOCOL
+// It should only be setup once at init
 var BeginString = "FIX.4.4"
-
-// IsHNXInfoGateProtocol should only be modified at init by set env IS_HNX_INFO_GATE_PROTOCOL
-var IsHNXInfoGateProtocol = false
-
-func init() {
-	IsHNXInfoGateProtocol, _ = strconv.ParseBool(os.Getenv("IS_HNX_INFO_GATE_PROTOCOL"))
-	if IsHNXInfoGateProtocol {
-		BeginString = "HNX.TDS.1"
-	}
-}
 
 //Header is the fix44 Header type
 type Header struct {
