@@ -5,18 +5,18 @@ import (
 	"github.com/quickfixgo/quickfix"
 )
 
-// MarketInfo MsgType = MI,
-// là nội dung thông tin về một chỉ số mà hệ thống chỉ số gửi ra
-type MarketInfo struct {
+// BoardInfo MsgType = BI,
+// là thông tin về bảng giao dịch
+type BoardInfo struct {
 	fix44.Header
 	*quickfix.Body
 	fix44.Trailer
 	Message *quickfix.Message
 }
 
-// FromMessageToMarketInfo creates a MarketInfo msg from a quickfix.Message instance
-func FromMessageToMarketInfo(m *quickfix.Message) MarketInfo {
-	return MarketInfo{
+// FromMessageToBoardInfo creates a BoardInfo msg from a quickfix.Message instance
+func FromMessageToBoardInfo(m *quickfix.Message) BoardInfo {
+	return BoardInfo{
 		Header:  fix44.Header{&m.Header},
 		Body:    &m.Body,
 		Trailer: fix44.Trailer{&m.Trailer},
@@ -25,21 +25,21 @@ func FromMessageToMarketInfo(m *quickfix.Message) MarketInfo {
 }
 
 // ToMessage returns a quickfix.Message instance
-func (m MarketInfo) ToMessage() *quickfix.Message {
+func (m BoardInfo) ToMessage() *quickfix.Message {
 	return m.Message
 }
 
 //RouteIndex returns the begin string, message type, and MessageRoute for this Message type
-func RouteMarketInfo(router func(msg MarketInfo, sessionID quickfix.SessionID) quickfix.MessageRejectError) (
+func RouteBoardInfo(router func(msg BoardInfo, sessionID quickfix.SessionID) quickfix.MessageRejectError) (
 	string, string, quickfix.MessageRoute) {
 	r := func(msg *quickfix.Message, sessionID quickfix.SessionID) quickfix.MessageRejectError {
-		return router(FromMessageToMarketInfo(msg), sessionID)
+		return router(FromMessageToBoardInfo(msg), sessionID)
 	}
-	return fix44.BeginString, "MI", r
+	return fix44.BeginString, "BI", r
 }
 
 // GetMarketCode Tag 341
-func (m MarketInfo) GetMarketCode() (v string, err quickfix.MessageRejectError) {
+func (m BoardInfo) GetMarketCode() (v string, err quickfix.MessageRejectError) {
 	var f MarketCodeField
 	if err = m.Get(&f); err == nil {
 		v = f.Value()
