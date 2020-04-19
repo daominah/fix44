@@ -50,7 +50,7 @@ func (m StockInfo) GetSymbol() (v string, err quickfix.MessageRejectError) {
 }
 
 // GetBoardCode Tag 425
-//Mã bảng của chứng khoán:
+// Mã bảng của chứng khoán:
 //	-LIS_BRD_01,..: bảng niêm yết
 //	-UPC_BRD_01,…: bảng upcom
 func (m StockInfo) GetBoardCode() (v string, err quickfix.MessageRejectError) {
@@ -73,7 +73,7 @@ func (f BoardCodeField) Value() string     { return f.String() }
 //	= 2: Ngừng giao dịch
 //	= 6: Hủy niêm yết
 //	= 7: Niêm yết mới
-//	= 8: Sắp hủy niêm yết
+//	= 8: Sắp hủy niêm yếtGetTradingSessionID
 //	= 10: Tạm ngừng giao dịch giữa phiên
 //	= 25: Giao dịch đặc biệt
 func (m StockInfo) GetSecurityTradingStatus() (v int, err quickfix.MessageRejectError) {
