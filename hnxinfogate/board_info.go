@@ -168,3 +168,11 @@ type NumSymbolDeclinesField struct{ quickfix.FIXInt }
 
 func (f NumSymbolDeclinesField) Tag() quickfix.Tag { return 253 }
 func (f NumSymbolDeclinesField) Value() int        { return f.Int() }
+
+func (m BoardInfo) GetTime() (v string, err quickfix.MessageRejectError) {
+	var f TimeField
+	if err = m.Get(&f); err == nil {
+		v = f.Value()
+	}
+	return
+}
