@@ -156,10 +156,10 @@ type HighestIndexField struct{ quickfix.FIXDecimal }
 func (f HighestIndexField) Tag() quickfix.Tag      { return 24 }
 func (f HighestIndexField) Value() decimal.Decimal { return f.Decimal }
 
-// GetTotalValue Tag 25
+// GetLowestIndex Tag 25
 //
 func (m Index) GetLowestIndex() (v float64, err quickfix.MessageRejectError) {
-	var f TotalValueField
+	var f LowestIndexField
 	if err = m.Get(&f); err == nil {
 		v, _ = f.Value().Float64()
 	}
