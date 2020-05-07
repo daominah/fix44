@@ -4,6 +4,7 @@ import (
 	"github.com/quickfixgo/field"
 	"github.com/quickfixgo/fix44"
 	"github.com/quickfixgo/quickfix"
+	"github.com/shopspring/decimal"
 )
 
 // AuctionMatch MsgType = EP.
@@ -47,3 +48,48 @@ func (m AuctionMatch) GetSymbol() (v string, err quickfix.MessageRejectError) {
 	}
 	return
 }
+
+// GetActionType Tag 33
+//Loại khớp : A : khớp chính (không có ở phái sinh), M : tạm khớp
+func (m AuctionMatch) GetActionType() (v string, err quickfix.MessageRejectError) {
+	var f ActionTypeField
+	if err = m.Get(&f); err == nil {
+		v = f.Value()
+	}
+	return
+}
+
+type ActionTypeField struct{ quickfix.FIXString }
+
+func (f ActionTypeField) Tag() quickfix.Tag { return 33 }
+func (f ActionTypeField) Value() string     { return f.String() }
+
+// GetPrice Tag 31,
+// Giá khớp (định kỳ)
+func (m AuctionMatch) GetPrice() (v float64, err quickfix.MessageRejectError) {
+	var f PriceField
+	if err = m.Get(&f); err == nil {
+		v, _ = f.Value().Float64()
+	}
+	return
+}
+
+type PriceField struct{ quickfix.FIXDecimal }
+
+func (f PriceField) Tag() quickfix.Tag      { return 31 }
+func (f PriceField) Value() decimal.Decimal { return f.Decimal }
+
+// GetQtty Tag 32,
+// Khối lượng khớp (định kỳ), với dữ liệu Phái sinh thì không có tag này
+func (m AuctionMatch) GetQtty() (v float64, err quickfix.MessageRejectError) {
+	var f QttyField
+	if err = m.Get(&f); err == nil {
+		v, _ = f.Value().Float64()
+	}
+	return
+}
+
+type QttyField struct{ quickfix.FIXDecimal }
+
+func (f QttyField) Tag() quickfix.Tag      { return 32 }
+func (f QttyField) Value() decimal.Decimal { return f.Decimal }
