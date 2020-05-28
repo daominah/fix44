@@ -1,6 +1,7 @@
 package hnxinfogate
 
 import (
+	"github.com/quickfixgo/field"
 	"github.com/quickfixgo/fix44"
 	"github.com/quickfixgo/quickfix"
 	"github.com/shopspring/decimal"
@@ -105,3 +106,26 @@ type LastTradingDateField struct{ quickfix.FIXString }
 
 func (f LastTradingDateField) Tag() quickfix.Tag { return 803 }
 func (f LastTradingDateField) Value() string     { return f.String() }
+
+// GetTradingSessionID Tag 336.
+//	case "AVAILABLE":
+//	case "CALL_AUCTION_OPENING":
+//	case "OPEN":
+//	case "CALL_AUCTION_CLOSING":
+//	case "CLOSED":
+func (m StockInfo) GetTradingSessionID() (v string, err quickfix.MessageRejectError) {
+	var f field.TradingSessionIDField
+	if err = m.Get(&f); err == nil {
+		v = f.String()
+	}
+	return
+}
+
+// GetTradSesStatus Tag 340.
+func (m StockInfo) GetTradSesStatus() (v string, err quickfix.MessageRejectError) {
+	var f field.TradSesStatusField
+	if err = m.Get(&f); err == nil {
+		v = f.String()
+	}
+	return
+}
